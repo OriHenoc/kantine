@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plats', function (Blueprint $table) {
+        Schema::create('poste_employes', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->text('description');
-            $table->foreignId('typeDePlatsID')->constrained('type_de_plats');
-            $table->text('image');
-            $table->double('prix');
-            $table->integer('quantite');
+            $table->text('description')->nullable();
+            $table->boolean('active')->default(1);
+            $table->boolean('deleted')->default(0);
             $table->timestamps();
-
-
+            $table->foreignId('createdBy')->constrained('utilisateurs');
+            $table->foreignId('updatedBy')->constrained('utilisateurs');
         });
-        
     }
 
     /**
@@ -31,7 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plats');
-        
+        Schema::dropIfExists('poste_employes');
+
     }
 };

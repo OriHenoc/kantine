@@ -16,16 +16,17 @@ return new class extends Migration
         $table->string('code');
         $table->string('nomComplet');
         $table->string('photo');
+        $table->string('solde')->default(0);
         $table->string('numero1')->unique();
         $table->string('numero2')->unique()->nullable();
         $table->char('genre');
         $table->string('profession')->nullable();
-        $table->string('email')->unique();  
+        $table->string('email')->unique();
         $table->string('motDePasse');
         $table->foreignId('roleID')->constrained('roles');
         $table->boolean('active')->default(1);
         $table->boolean('deleted')->default(0);
-        $table->timestamps();       
+        $table->timestamps();
     });
     }
 

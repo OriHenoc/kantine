@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
             $table->string('nomComplet');
             $table->text('description')->nullable();
             $table->string('numero1')->unique();
@@ -20,9 +21,13 @@ return new class extends Migration
             $table->char('genre');
             $table->string('entreprise')->nullable();
             $table->text('image')->nullable();
-            $table->foreignId('groupeDeClientsID')->constrained('groupe_de_clients');
-            $table->string('email')->nullable(); 
-            $table->timestamps();       
+            $table->foreignId('groupeDeClientID')->constrained('groupe_de_clients');
+            $table->string('email')->nullable();
+            $table->boolean('active')->default(1);
+            $table->boolean('deleted')->default(0);
+            $table->timestamps();
+            $table->foreignId('createdBy')->constrained('utilisateurs');
+            $table->foreignId('updatedBy')->constrained('utilisateurs');
         });
     }
 
@@ -32,6 +37,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clients');
-        
+
     }
 };

@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->integer('plat_id');
-            $table->double('prix');
             $table->integer('quantite');
-            $table->timestamps();       
+            $table->foreignId('platID')->constrained('plat');
+            $table->boolean('active')->default(1);
+            $table->boolean('deleted')->default(0);
+            $table->timestamps();
+            $table->foreignId('createdBy')->constrained('utilisateurs');
+            $table->foreignId('updatedBy')->constrained('utilisateurs');
         });
     }
 

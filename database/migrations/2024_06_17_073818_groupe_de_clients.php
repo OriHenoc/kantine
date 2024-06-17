@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('groupe_de_clients', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
             $table->string('libelle');
-            $table->text('descriptiion')->nullable();
-            $table->timestamps();      
+            $table->text('description')->nullable();
+            $table->boolean('active')->default(1);
+            $table->boolean('deleted')->default(0);
+            $table->timestamps();
+            $table->foreignId('createdBy')->constrained('utilisateurs');
+            $table->foreignId('updatedBy')->constrained('utilisateurs');
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('groupe_de_clients');
-        
+
     }
 };

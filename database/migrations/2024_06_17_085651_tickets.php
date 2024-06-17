@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_de_plats', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('libelle');
-            $table->text('description');
+            $table->string('code');
+            $table->string('statut');
+            $table->string('qrCode')->nullable();
+            $table->foreignId('menuID')->constrained('menus');
+            $table->integer('quantite');
             $table->boolean('active')->default(1);
             $table->boolean('deleted')->default(0);
+            $table->foreignId('utilisateurID')->constrained('utilisateurs');
             $table->timestamps();
             $table->foreignId('createdBy')->constrained('utilisateurs');
-
-
+            $table->foreignId('updatedBy')->constrained('utilisateurs');
         });
     }
 
@@ -29,7 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_de_plats');
-
+        Schema::dropIfExists('tickets');
     }
 };
