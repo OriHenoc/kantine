@@ -17,7 +17,7 @@ return new class extends Migration
         $table->string('nomComplet');
         $table->string('photo');
         $table->string('numero1')->unique();
-        $table->string('numero2')->nullable();
+        $table->string('numero2')->unique()->nullable();
         $table->char('genre');
         $table->string('profession')->nullable();
         $table->string('email')->unique();  

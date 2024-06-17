@@ -17,7 +17,10 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('active')->default(1);
             $table->boolean('deleted')->default(0);
-            $table->timestamps();      
+            $table->timestamps();
+            $table->foreignId('createdBy')->constrained('utilisateurs');
+
+
         });
     }
 
@@ -26,6 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('type_de_plats');
+
     }
 };
