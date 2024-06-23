@@ -54,14 +54,11 @@ class UtilisateurController extends Controller
     }
 
 
-    /*
-     public function voirUtilisateur($id)
+    public function voirUtilisateur($id)
     {
         $utilisateur = Utilisateur::find($id);
-        return response()->json(['voir utilisateur'=>$utilisateur, 'code' => 200]);
+        return response()->json(['Utilisateur'=>$utilisateur, 'code' => 200]);
     }
-
-    */
 
     public function modifierInfo(Request $request, $id)
     {
@@ -132,5 +129,37 @@ class UtilisateurController extends Controller
         }
     }
 
+    public function modifierMotDePasse(Request $request, $id)
+    {
+        // Valider la requête
+        $validator = Validator::make($request->all(), [
+            'ancienMotDePasse' => 'required|string|min:6',
+            'nouveauMotDePasse' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['Erreurs' => $validator->errors(), 'code' => 422]);
+        }
+
+        // Récupérer l'utilisateur concerné
+        $utilisateur = Utilisateur::find($id);
+
+        if (!$utilisateur) {
+            return response()->json(['Erreur' => 'Utilisateur non trouvé !', 'code' => 404]);
+        }
+
+        // Vérifier l'ancien mot de passe
+        if (!Hash::check($request->ancienMotDePasse, $utilisateur->motDePasse)) {
+            return response()->json(['Erreur' => 'Ancien mot de passe incorrect !', 'code' => 403]);
+        }
+
+        // Crypter le nouveau mot de passe
+        $utilisateur->motDePasse = Hash::make($request->nouveauMotDePasse);
+
+        // Sauvegarder les modifications
+        $utilisateur->save();
+
+        return response()->json(['message' => 'Mot de passe mis à jour !', 'code' => 200]);
+    }
 
 }
