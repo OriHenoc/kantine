@@ -28,7 +28,7 @@ Route::prefix("utilisateurs")->group(function(){
     Route::get("/", [UtilisateurController::class, "listeUtilisateur"]);
     Route::post("/", [UtilisateurController::class, "creerUtilisateur"]);
     Route::put("/{id}", [UtilisateurController::class, "modifierInfo"]);
-    /*Route::put("/{id}", [UtilisateurController::class, "changerActivation"]);
-    Route::put("/{id}", [UtilisateurController::class, "changerSuppression"]); */
+    Route::post("/photo/{id}", [UtilisateurController::class, "modifierPhoto"]);
+    /*Route::put("/{id}", [UtilisateurController::class, "changerSuppression"]); */
 });
 

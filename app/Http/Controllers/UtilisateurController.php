@@ -105,9 +105,17 @@ class UtilisateurController extends Controller
             return response()->json(['Erreur' => 'Utilisateur non trouvé !', 'code' => 404]);
         }
         else{
-            $request->validate([
+            // $request->validate([
+            //     'photo' => 'required|image|max:10240',
+            // ]);
+
+            $validator = Validator::make($request->all(), [
                 'photo' => 'required|image|max:10240',
             ]);
+
+            if ($validator->fails()) {
+                return response()->json(['Erreurs' => $validator->errors()], 422);
+            }
 
             if ($request->hasFile('photo')) {
                 $nouveauCheminPhoto = $request->file('photo')->store('', 'photo_utilisateurs');
