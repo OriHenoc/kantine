@@ -22,8 +22,6 @@ class Utilisateur extends Model
         'motDePasse',
         'roleID',
         'commentaire',
-        'createdBy',
-        'updatedBy',
     ];
 
     protected $hidden = [

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Utilisateur;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UtilisateurController extends Controller
 {
@@ -45,8 +48,8 @@ class UtilisateurController extends Controller
         //dd($input);
 
         $utilisateur = Utilisateur::create($input);
-        
-        return response()->json(['utilisateur crée'=>$utilisateur, 'code' => 201]);          
+
+        return response()->json(['utilisateur crée'=>$utilisateur, 'code' => 201]);
     }
 
 
@@ -55,29 +58,45 @@ class UtilisateurController extends Controller
     {
         $utilisateur = Utilisateur::find($id);
         return response()->json(['voir utilisateur'=>$utilisateur, 'code' => 200]);
-    }  
-        
+    }
+
     */
 
     public function modifierInfo(Request $request, $id)
     {
-        $utilisateur = Utilisateur::findOrFail($id);
-        
-        $validationDesDonnees = $request->validate([
-            'code' => 'required',
-            'nomComplet' => 'required',
-            'numero1' => 'required|string|unique:utilisateurs'.$utilisateur->id,
-            'numero2' => 'nullable|string|unique:utilisateurs'.$utilisateur->id,
-            'genre' => 'required|in:M,F',
-            'email' => 'required|string|email|unique:utilisateurs'.$utilisateur->id,
-            'roleID' => 'required|exists:roles,id'
+        $utilisateur = Utilisateur::find($id);
+
+        if (!$utilisateur) {
+            return response()->json(['Erreur' => 'Utilisateur non trouvé !', 'code' => 404]);
+        }
+
+        // Validation des données
+        $validator = Validator::make($request->all(), [
+            'code' => 'sometimes|required',
+            'nomComplet' => 'sometimes|required',
+            'numero1' => 'sometimes|required|string|unique:utilisateurs,numero1,' . $id,
+            'numero2' => 'sometimes|nullable|string|unique:utilisateurs,numero2,' . $id,
+            'genre' => 'sometimes|required|in:M,F',
+            'email' => 'sometimes|required|string|email|unique:utilisateurs,email,' . $id,
+            'roleID' => 'sometimes|required|exists:roles,id',
         ]);
-       
-        
-        $input = $request->all();
-        dd($input);
-        $utilisateur->update($input);
-        return response()->json([' infos utilisateur modifiés'=>$utilisateur, 'code' => 200]);
+
+        if ($validator->fails()) {
+            return response()->json(['Erreurs' => $validator->errors()], 422);
+        }
+
+        // Mise à jour des informations de l'utilisateur avec les données validées
+        $donneesValidees = $validator->validated();
+        $utilisateur->fill($donneesValidees);
+
+        // Mise à jour des autres champs non validés explicitement
+        $donneesNonValidees = $request->except(array_keys($donneesValidees));
+        $utilisateur->fill($donneesNonValidees);
+
+        // Sauvegarde des informations de l'utilisateur
+        $utilisateur->save();
+
+        return response()->json(['message' => 'Infos utilisateur modifiées', 'utilisateur' => $utilisateur, 'code' => 200]);
     }
 
 }
