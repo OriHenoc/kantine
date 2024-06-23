@@ -6,6 +6,7 @@ use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -98,5 +99,38 @@ class UtilisateurController extends Controller
 
         return response()->json(['message' => 'Infos utilisateur modifiées', 'utilisateur' => $utilisateur, 'code' => 200]);
     }
+
+    public function modifierPhoto(Request $request, $id)
+    {
+        $utilisateur = Utilisateur::find($id);
+
+        if(!$utilisateur){
+            return response()->json(['Erreur' => 'Utilisateur non trouvé !', 'code' => 404]);
+        }
+        else{
+            $request->validate([
+                'photo' => 'required|image|max:10240',
+            ]);
+
+            if ($request->hasFile('photo')) {
+                $nouveauCheminPhoto = $request->file('photo')->store('', 'photo_utilisateurs');
+
+                // Supprimer l'ancienne photo si nécessaire (pour éviter une accumulation de photos non utilisées)
+                if ($utilisateur->photo) {
+                    $ancienCheminDePhoto = public_path('assets/photosUtilisateurs/') . $utilisateur->photo;
+
+                    if (File::exists($ancienCheminDePhoto)) {
+                        File::delete($ancienCheminDePhoto);
+                    }
+                }
+                $utilisateur->photo = $nouveauCheminPhoto;
+                $utilisateur->save();
+                return response()->json(['message' => 'Photo de l\'utilisateur modifiée', 'utilisateur' => $utilisateur, 'code' => 200]);
+            } else {
+                return response()->json(['Erreur' => 'Fichier photo non trouvé dans la requête !', 'code' => 200]);
+            }
+        }
+    }
+
 
 }
