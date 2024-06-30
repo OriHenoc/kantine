@@ -12,7 +12,7 @@ class Plat extends Model
     protected $fillable = [
         'libelle',
         'description',
-        'typeDePlatID',
+        'typeDePlatsID',
         'image',
         'prix',
         'quantite',

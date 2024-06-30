@@ -51,6 +51,20 @@ return [
             'visibility' => 'public'
         ],
 
+        'image_clients' => [
+            'driver' => 'local',
+            'root' => public_path('assets/imagesClients'),
+            'url' => env('APP_URL').'/assets/photosClients',
+            'visibility' => 'public'
+        ],
+
+        'images_plats' => [
+            'driver' => 'local',
+            'root' => public_path('assets/imagesPlats'),
+            'url' => env('APP_URL').'/assets/photosPlats',
+            'visibility' => 'public'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

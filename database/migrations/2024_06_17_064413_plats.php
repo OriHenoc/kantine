@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('plats', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->text('description');
-            $table->foreignId('typeDePlatID')->constrained('type_de_plats');
+            $table->text('description')->nullable();
+            $table->foreignId('typeDePlatsID')->constrained('type_de_plats');
             $table->string('image');
             $table->integer('prix');
             $table->integer('quantite')->nullable();

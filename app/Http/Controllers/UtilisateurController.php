@@ -142,7 +142,7 @@ class UtilisateurController extends Controller
         // Valider la requête
         $validator = Validator::make($request->all(), [
             'ancienMotDePasse' => 'required|string|min:6',
-            'nouveauMotDePasse' => 'required|string|min:6|confirmed',
+            'nouveauMotDePasse' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -168,6 +168,50 @@ class UtilisateurController extends Controller
         $utilisateur->save();
 
         return response()->json(['message' => 'Mot de passe mis à jour !', 'code' => 200]);
+    }
+
+
+
+    public function changerActivation($id)
+    {
+        // Trouver l'utilisateur par ID
+        $utilisateur = Utilisateur::find($id);
+
+        // Changer l'état d'activation
+        $message = "";
+        if ($utilisateur->active == 1) {
+            $utilisateur->active = 0;  
+            $message = "Utilisateur désactivé";
+        } else {
+            $utilisateur->active = 1; 
+            $message = "Utilisateur activé";
+        }
+
+        // Enregistrer les modifications
+        $utilisateur->save();
+
+        return response()->json([$message => $utilisateur, 'code' => 200]);
+    }
+
+    public function changerSuppression($id)
+    {
+        // Trouver l'utilisateur par ID
+        $utilisateur = Utilisateur::find($id);
+
+        // Changer l'état de suppression
+        $message = "";
+        if ($utilisateur->deleted == 1) {
+            $utilisateur->deleted = 0;  
+            $message = "Utilisateur restauré";
+        } else {
+            $utilisateur->deleted = 1; 
+            $message = "Utilisateur supprimé";
+        }
+
+        // Enregistrer les modifications
+        $utilisateur->save();
+
+        return response()->json([$message => $utilisateur, 'code' => 200]);
     }
 
 }
