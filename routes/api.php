@@ -6,6 +6,10 @@ use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\GroupeDeClientController;
 use App\Http\Controllers\TypeDePlatController;
 use App\Http\Controllers\PlatController;
+use App\Http\Controllers\PosteEmployeController;
+use App\Http\Controllers\EmployeController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\CommandeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("roles")->group(function(){
@@ -46,7 +50,6 @@ Route::prefix("groupesClients")->group(function(){
     Route::put("/{id}", [GroupeDeClientController::class, "modifierGroupeDeClient"]);
     Route::put("/changerstatut/{id}", [GroupeDeClientController::class, "changerActivation"]);
     Route::put("/{id}", [GroupeDeClientController::class, "changerSuppression"]);
-    /*Route::put("/{id}", [UtilisateurController::class, "changerSuppression"]); */
 });
 
 Route::prefix("TypesDePlats")->group(function(){
@@ -64,7 +67,46 @@ Route::prefix("Plats")->group(function(){
     Route::post("/", [PlatController::class, "creerPlat"]);
     Route::put("/modifierPlats/{id}", [PlatController::class, "modifierInfoPlat"]);
     Route::put("/changerStatut/{id}", [PlatController::class, "changerActivation"]);
-    Route::post("/imagePlat/{id}", [UtilisateurController::class, "modifierPhoto"]);
+    Route::post("/imagePlat/{id}", [PlatController::class, "modifierPhoto"]);
+    Route::put("/changerStatut/{id}", [PlatController::class, "changerActivation"]);
     Route::put("/changerSuppression/{id}", [PlatController::class, "changerSuppression"]);
-    /*Route::put("/{id}", [UtilisateurController::class, "changerSuppression"]); */
+});
+
+Route::prefix("PostesEmployes")->group(function(){
+    Route::get("/", [PosteEmployeController::class, "listerPostes"]);
+    Route::get("/voirDeatilUnPoste/{id}", [PosteEmployeController::class, "voirPostes"]);
+    Route::post("/", [PosteEmployeController::class, "creerPoste"]);
+    Route::put("/modifierPostes/{id}", [PosteEmployeController::class, "modifierInfoPoste"]);
+    Route::put("/changerStatut/{id}", [PosteEmployeController::class, "changerActivation"]);
+    Route::put("/changerSuppression/{id}", [PosteEmployeController::class, "changerSuppression"]);
+});
+
+
+Route::prefix("Employes")->group(function(){
+    Route::get("/", [EmployeController::class, "listeEmploye"]);
+    Route::get("/voirDeatilUnEmploye/{id}", [EmployeController::class, "voirEmploye"]);
+    Route::post("/", [EmployeController::class, "creerEmploye"]);
+    Route::post("/photoEmploye/{id}", [EmployeController::class, "modifierPhoto"]);
+    Route::put("/modifierEmploye/{id}", [EmployeController::class, "modifierInfoEmploye"]);
+    Route::put("/changerStatut/{id}", [EmployeController::class, "changerActivation"]);
+    Route::put("/changerSuppression/{id}", [EmployeController::class, "changerSuppression"]);
+});
+
+
+Route::prefix("Menus")->group(function(){
+    Route::get("/", [MenuController::class, "listeMenu"]);
+    Route::get("/voirDeatilUnMenu/{id}", [MenuController::class, "voirMenu"]);
+    Route::post("/", [MenuController::class, "creerMenu"]);
+    Route::put("/modifierMenu/{id}", [MenuController::class, "modifierInfoMenu"]);
+    Route::put("/changerStatut/{id}", [MenuController::class, "changerActivation"]);
+    Route::put("/changerSuppression/{id}", [MenuController::class, "changerSuppression"]);
+});
+
+Route::prefix("Commandes")->group(function(){
+    Route::get("/", [CommandeController::class, "listeCommandes"]);
+    Route::get("/voirDeatilUneCommande/{id}", [CommandeController::class, "voirCommande"]);
+    Route::post("/", [CommandeController::class, "creerCommande"]);
+    Route::put("/modifierCommande/{id}", [CommandeController::class, "modifierInfoCommande"]);
+    Route::put("/changerStatut/{id}", [CommandeController::class, "changerActivation"]);
+    Route::put("/changerSuppression/{id}", [CommandeController::class, "changerSuppression"]);
 });

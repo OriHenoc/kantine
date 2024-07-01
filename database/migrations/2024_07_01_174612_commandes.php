@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
             $table->integer('quantite');
-            $table->foreignId('platID')->constrained('plat');
+            $table->foreignId('platID')->constrained('plats');
             $table->boolean('active')->default(1);
             $table->boolean('deleted')->default(0);
             $table->timestamps();
@@ -29,6 +29,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('commandes');
-
     }
 };

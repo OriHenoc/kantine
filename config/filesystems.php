@@ -54,14 +54,21 @@ return [
         'image_clients' => [
             'driver' => 'local',
             'root' => public_path('assets/imagesClients'),
-            'url' => env('APP_URL').'/assets/photosClients',
+            'url' => env('APP_URL').'/assets/imagesClients',
             'visibility' => 'public'
         ],
 
         'images_plats' => [
             'driver' => 'local',
             'root' => public_path('assets/imagesPlats'),
-            'url' => env('APP_URL').'/assets/photosPlats',
+            'url' => env('APP_URL').'/assets/imagesPlats',
+            'visibility' => 'public'
+        ],
+
+        'photos_employes' => [
+            'driver' => 'local',
+            'root' => public_path('assets/imagesEmployes'),
+            'url' => env('APP_URL').'/assets/imagesEmployes',
             'visibility' => 'public'
         ],
 

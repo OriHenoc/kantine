@@ -128,5 +128,57 @@ class PlatController extends Controller
     }
 
 
+    public function changerActivation($id)
+    {
+        // Trouver le plat par ID
+        $plat = Plat::find($id);
+
+        if (!$plat) {
+            return response()->json(['Erreur' => 'Plat non trouvé !', 'code' => 404]);
+        }
+
+        // Changer l'état d'activation
+        $message = "";
+        if ($plat->active  == 1) {
+            $plat->active  = 0;  
+            $message = "Plat désactivé";
+        } else {
+            $plat->active  = 1; 
+            $message = "Plat activé";
+        }
+
+        // Enregistrer les modifications
+        $plat->save();
+
+        return response()->json(['message' => $message, 'plat' => $plat, 'code' => 200]);
+    }
+
+
+    public function changerSuppression($id)
+    {
+        // Trouver le plat par ID
+        $plat = Plat::find($id);
+
+        if (!$plat) {
+            return response()->json(['Erreur' => 'Plat non trouvé !', 'code' => 404]);
+        }
+
+        // Changer l'état de suppression
+        $message = "";
+        if ($plat->deleted == 1) {
+            $plat->deleted = 0;  
+            $message = "Plat restauré";
+        } else {
+            $plat->deleted = 1; 
+            $message = "Plat supprimé";
+        }
+
+        // Enregistrer les modifications
+        $plat->save();
+
+        return response()->json(['message' => $message, 'plat' => $plat, 'code' => 200]);
+    }
+
+
 
 }
