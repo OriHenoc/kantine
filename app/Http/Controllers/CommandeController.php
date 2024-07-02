@@ -75,4 +75,50 @@ class CommandeController extends Controller
 
         return response()->json(['commande modifiée' => $commande, 'code' => 200]);
     }
+
+
+
+    public function changerActivation($id)
+    {
+        $commande = Commande::find($id);
+
+        if (!$commande) {
+            return response()->json(['message' => 'Commande non trouvée', 'code' => 404]);
+        }
+
+        $message = "";
+        if ($commande->active == 1) {
+            $commande->active = 0;  
+            $message = "Commande désactivée";
+        } else {
+            $commande->active = 1; 
+            $message = "Commande activée";
+        }
+
+        $commande->save();
+
+        return response()->json([$message => $commande, 'code' => 200]);
+    }
+
+    public function changerSuppression($id)
+    {
+        $commande = Commande::find($id);
+
+        if (!$commande) {
+            return response()->json(['message' => 'Commande non trouvée', 'code' => 404]);
+        }
+
+        $message = "";
+        if ($commande->deleted == 1) {
+            $commande->deleted = 0;  
+            $message = "Commande restaurée";
+        } else {
+            $commande->deleted = 1; 
+            $message = "Commande supprimée";
+        }
+
+        $commande->save();
+
+        return response()->json([$message => $commande, 'code' => 200]);
+    }
 }
