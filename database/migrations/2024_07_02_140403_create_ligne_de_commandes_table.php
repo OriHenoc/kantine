@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ligne', function (Blueprint $table) {
+        Schema::create('ligne_de_commandes', function (Blueprint $table) {
             $table->id();
             $table->string('statut');
             $table->foreignId('commandeID')->constrained('commandes');

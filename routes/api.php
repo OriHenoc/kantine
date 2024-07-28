@@ -10,6 +10,7 @@ use App\Http\Controllers\PosteEmployeController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\LigneDeCommandeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("roles")->group(function(){
@@ -21,7 +22,6 @@ Route::prefix("roles")->group(function(){
 
 
 });
-
 
 Route::prefix("clients")->group(function(){
     Route::get("/", [ClientController::class, "listeClient"]);
@@ -109,4 +109,13 @@ Route::prefix("Commandes")->group(function(){
     Route::put("/modifierCommande/{id}", [CommandeController::class, "modifierInfoCommande"]);
     Route::put("/changerStatut/{id}", [CommandeController::class, "changerActivation"]);
     Route::put("/changerSuppression/{id}", [CommandeController::class, "changerSuppression"]);
+});
+
+Route::prefix("LigneDeCommandes")->group(function(){
+    Route::get("/", [LigneDeCommandeController::class, "listeLigneCommandes"]);
+    Route::get("/voirDeatilUneLigneDeCommande/{id}", [LigneDeCommandeController::class, "voirLigneDeCommande"]);
+    Route::post("/", [LigneDeCommandeController::class, "creerLigneDeCommande"]);
+    Route::put("/modifierligneCommande/{id}", [LigneDeCommandeController::class, "modifierInfoLigneDeCommande"]);
+    Route::put("/changerStatut/{id}", [LigneDeCommandeController::class, "changerActivation"]);
+    Route::put("/changerSuppression/{id}", [LigneDeCommandeController::class, "changerSuppression"]);
 });
